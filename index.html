@@ -4,46 +4,48 @@
     <meta charset="utf-8">
     <title>Liz Goldstein's Sample Project</title>
     <script src="https://unpkg.com/launchdarkly-js-client-sdk@2"></script>
-  </head>
-  <body>
-
-	<script>
-
-	// function getUrlVars() {
-	//     var vars = {};
-	//     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-	//         vars[key] = value;
-	//     });
-	//     return vars;
-	// }
-
-	// var fname = getUrlVars()["fname"];
-	// var lname = getUrlVars()["lname"];
-
-	function makeid(length) {
-	   var result           = '';
-	   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	   var charactersLength = characters.length;
-	   for ( var i = 0; i < length; i++ ) {
-	      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-	   }
-	   return result;
+    <script type="text/JavaScript">
+	function timedRefresh(timeoutPeriod) {
+	    setTimeout("location.reload(true);",timeoutPeriod);
 	}
+	</script>
+	<style>
+	body > div {
+	    position: absolute;
+	    top: 0;
+	    bottom: 0;
+	    left: 0;
+	    right: 0;
+	    display: flex;
+	    justify-content: space-around;
+	    align-items: center;
+	    flex-wrap: wrap;
+	}
+	</style>
+  	</head>
+  	<body onload="JavaScript:timedRefresh(5000);">
 
-	var unique_id = makeid(5)
-	var element = document.getElementById("div1");
+		<script>
+		function makeid(length) {
+		   var result           = '';
+		   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		   var charactersLength = characters.length;
+		   for ( var i = 0; i < length; i++ ) {
+		      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+		   }
+		   return result;
+		}
 
-	  var user = {
-	    key: unique_id,
-	  };
+		var unique_id = makeid(5)
+	  	var user = {
+	    	key: unique_id,
+	  	};
 
+	  	var element = document.getElementById("div1");
+		var div = document.createElement('div');
+		document.body.appendChild(div);
 
-	  var div = document.createElement('div');
-	  document.body.appendChild(div);
-
-	  div.appendChild(document.createTextNode('Initializing...'));
-
-	  var ldclient = LDClient.initialize('5cfd56c1a2f8290765e10047', user);
+		var ldclient = LDClient.initialize('5cfd56c1a2f8290765e10047', user);
 
 		function prompt(){
 			var shouldShow = ldclient.variation('name-pop', false);
@@ -51,42 +53,36 @@
 
 			if (shouldShow) {
 		    	// var name = prompt("What's your name?", "Liz");
-		    	var html = 'Hello, sweetie'
+		    	var html = 'Hello, friend'
+		    	document.body.style.backgroundColor = "red";
+		    	var elem = document.getElementById("div1");
+		    	elem.style.color = "Black";
+				elem.style.fontSize = "120px";
 		    } else {
 		    	var html = 'Hello, world!'
+		    	document.body.style.backgroundColor = "blue";
+		    	var elem = document.getElementById("div1");
+		    	elem.style.color = "White";
+				elem.style.fontSize = "120px";
 		    }
 
-		    div.replaceChild(document.createTextNode(html), div.firstChild);
+		    var para = document.createElement("p");
+			var node = document.createTextNode(html);
+			para.appendChild(node);
+
+			var element = document.getElementById("div1");
+			element.appendChild(para);
 		}
 
-		ldclient.on('ready', prompt);
-	  	ldclient.on('change', prompt);
-	</script>
-<!-- 
-	<form action="index.html" style="border:1px solid #ccc">
-  	<div class="container">
-    <h1>Sign Up</h1>
-    <p>Please fill in this form to create an account.</p>
-    <hr>
 
-    <label for="email"><b>First Name</b></label>
-    <input type="text" placeholder="First Name" name="fname" required>
+			ldclient.on('ready', prompt);
+		  	ldclient.on('change', prompt);
+		</script>
 
-    <label for="psw"><b>Last Name</b></label>
-    <input type="text" placeholder="Last Name" name="lname" required>
+		<div id="div1">
+		</div>
 
-    <label>
-      <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
-    </label>
+		<div id="countdown"></div>
 
-    <div class="clearfix">
-      <button type="submit" class="signupbtn">Sign Up</button>
-    </div>
-  </div>
-</form>
- -->
-
-
-
-  </body>
+  	</body>
 </html>
