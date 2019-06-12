@@ -46,7 +46,7 @@ Paste the generated snippet in an index.html file, and open this in your local b
 
 You’ll see a client side ID has been generated in your code snippet, where the LaunchDarkly client is instantiated—this is how the API calls are made. 
 
-![alt text](https://github.com/LizCira/ldarkly_onepage/Images/ScreenShot2019-06-11at11.32.09PM.png "Successful client call")
+![alt text](https://github.com/LizCira/ldarkly_onepage/blob/master/Images/ScreenShot2019-06-11at11.32.09PM.png "Successful client call")
 
 The ID string used by the client is not a secret, and can be safely checked into version control. You’ll also see “Bob Loblow” has been added to the “Users” section of your LaunchDarkly dashboard. 
 
@@ -56,7 +56,7 @@ First, I was a bit confused by the hardcoded user data in the snippet example. T
 
 Instead, I created a new feature flag without using the wizard. After naming your flag, you can choose “a percentage rollout” under “Default rule” to  serve the new flag to an assigned percentage of users, regardless of user data. 
 
-![alt text](https://github.com/LizCira/ldarkly_onepage/Images/ScreenShot2019-06-11at11.08.54PM.png "Setting up 50/50 distribution")
+![alt text](https://github.com/LizCira/ldarkly_onepage/blob/master/Images/ScreenShot2019-06-11at11.08.54PM.png "Setting up 50/50 distribution")
 
 My initial thought was to use one of Javascript’s most satisfying basic features—the prompt—and serve it to 50% of my users. However, the Javascript prompt didn’t play well with LaunchDarkly, so I went with different colored backgrounds instead. I picked the 50/50 split option on the LaunchDarkly dashboard, and added an auto-refresh script so I could see my flag being served. 
 
