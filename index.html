@@ -5,8 +5,10 @@
     <title>Liz Goldstein's Sample Project</title>
     <script src="https://unpkg.com/launchdarkly-js-client-sdk@2"></script>
     <script type="text/JavaScript">
+    // Automatically refreshing the page 
 	function timedRefresh(timeoutPeriod) {
 	    setTimeout("location.reload(true);",timeoutPeriod);
+	    console.log("Reloaded")
 	}
 	</script>
 	<style>
@@ -24,65 +26,69 @@
 	</style>
   	</head>
   	<body onload="JavaScript:timedRefresh(5000);">
-
 		<script>
-		function makeid(length) {
-		   var result           = '';
-		   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		   var charactersLength = characters.length;
-		   for ( var i = 0; i < length; i++ ) {
-		      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-		   }
-		   return result;
-		}
 
-		var unique_id = makeid(5)
-	  	var user = {
-	    	key: unique_id,
-	  	};
+			// Creating dummy user ID
+			function makeid(length) {
+			   var result           = '';
+			   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+			   var charactersLength = characters.length;
+			   for ( var i = 0; i < length; i++ ) {
+			      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+			   }
+			   return result;
+			}
 
-	  	var element = document.getElementById("div1");
-		var div = document.createElement('div');
-		document.body.appendChild(div);
+			// Initializing user session -- this value should come from user sign-in
+			var unique_id = makeid(5)
+		  	var user = {
+		    	key: unique_id,
+		  	};
 
-		var ldclient = LDClient.initialize('5cfd56c1a2f8290765e10047', user);
+		  	// Setting up javascript html
+		  	var element = document.getElementById("div1");
+			var div = document.createElement('div');
+			document.body.appendChild(div);
 
-		function prompt(){
-			var shouldShow = ldclient.variation('name-pop', false);
-			console.log(shouldShow)
+			// Starting LaunchDarkly
+			var ldclient = LDClient.initialize('5cfd56c1a2f8290765e10047', user);
 
-			if (shouldShow) {
-		    	// var name = prompt("What's your name?", "Liz");
-		    	var html = 'Hello, friend'
-		    	document.body.style.backgroundColor = "red";
-		    	var elem = document.getElementById("div1");
-		    	elem.style.color = "Black";
-				elem.style.fontSize = "120px";
-		    } else {
-		    	var html = 'Hello, world!'
-		    	document.body.style.backgroundColor = "blue";
-		    	var elem = document.getElementById("div1");
-		    	elem.style.color = "White";
-				elem.style.fontSize = "120px";
-		    }
+			// The actual, visible flag logic--background and text willc change
+			// In the LaunchDarkly background, display rate for ths feature lag is set to 50/50
+			function prompt(){
+				var shouldShow = ldclient.variation('name-pop', false);
+				console.log(shouldShow)
 
-		    var para = document.createElement("p");
-			var node = document.createTextNode(html);
-			para.appendChild(node);
+				if (shouldShow) {
+			    	// var name = prompt("What's your name?", "Liz");
+			    	var html = 'Hello, friend'
+			    	document.body.style.backgroundColor = "red";
+			    	var elem = document.getElementById("div1");
+			    	elem.style.color = "Black";
+					elem.style.fontSize = "120px";
+			    } else {
+			    	var html = 'Hello, world!'
+			    	document.body.style.backgroundColor = "blue";
+			    	var elem = document.getElementById("div1");
+			    	elem.style.color = "White";
+					elem.style.fontSize = "120px";
+			    }
 
-			var element = document.getElementById("div1");
-			element.appendChild(para);
-		}
+			    // Generating the page HTML once the feature flag has been established
+			    var para = document.createElement("p");
+				var node = document.createTextNode(html);
+				para.appendChild(node);
 
+				var element = document.getElementById("div1");
+				element.appendChild(para);
+			}
 
-			ldclient.on('ready', prompt);
-		  	ldclient.on('change', prompt);
+				ldclient.on('ready', prompt);
+			  	ldclient.on('change', prompt);
 		</script>
 
 		<div id="div1">
 		</div>
-
-		<div id="countdown"></div>
-
+		
   	</body>
 </html>
